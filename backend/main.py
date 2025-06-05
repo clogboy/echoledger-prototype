@@ -5,7 +5,7 @@ from hashlib import sha256
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-from .storage import StorageBackend
+from storage import StorageBackend
 
 app = FastAPI()
 storage = StorageBackend()
