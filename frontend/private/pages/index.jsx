@@ -1,31 +1,38 @@
-// /frontend/demo/PrivateDemoApp.jsx import React, { useContext } from 'react'; import { WalletContext } from '../shared/WalletProvider'; import { Card, CardContent } from '@/components/ui/card'; import { Button } from '@/components/ui/button';
+import React from 'react';
+import { useWallet } from '../../shared/WalletProvider';
 
-export default function PrivateDemoApp() { const { walletAddress, connectWallet, isConnected } = useContext(WalletContext);
+export default function PrivateDemoApp() {
+  const { wallet, connectMetaMask, createBurnerWallet } = useWallet();
 
-return ( <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50"> <Card className="w-full max-w-xl p-6"> <CardContent> <h1 className="text-2xl font-semibold mb-4">Welcome to the Echo Ledger Demo</h1>
+return (
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f9fafb' }}>
+      <div style={{ width: '100%', maxWidth: '36rem', padding: '1.5rem', backgroundColor: 'white', borderRadius: '0.5rem', boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)' }}>
+        <h1 style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: '1rem' }}>Welcome to the Echo Ledger Demo</h1>
 
-{isConnected ? (
-        <div className="space-y-4">
-          <p className="text-gray-600">
-            Connected wallet: <span className="font-mono">{walletAddress}</span>
-          </p>
-          <p className="text-gray-700">
-            ✅ You now have access to this demo space. Here you can see how a registered idea would be validated
-            through a burner wallet or MetaMask.
-          </p>
-        </div>
-      ) : (
-        <div className="space-y-4">
-          <p className="text-gray-700">Please connect a wallet to continue:</p>
-          <div className="flex space-x-4">
-            <Button onClick={() => connectWallet('burner')}>Use Burner Wallet</Button>
-            <Button onClick={() => connectWallet('metamask')}>Use MetaMask</Button>
+        {wallet ? (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <p style={{ color: '#4b5563' }}>
+              Connected wallet: <span style={{ fontFamily: 'monospace' }}>{wallet.address}</span>
+            </p>
+            <p style={{ color: '#374151' }}>
+              ✅ You now have access to this demo space. Here you can see how a registered idea would be validated
+              through a burner wallet or MetaMask.
+            </p>
           </div>
-        </div>
-      )}
-    </CardContent>
-  </Card>
-</div>
-
-); }
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <p style={{ color: '#374151' }}>Please connect a wallet to continue:</p>
+            <div style={{ display: 'flex', gap: '1rem' }}>
+              <button onClick={createBurnerWallet} style={{ padding: '0.5rem 1rem', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '0.25rem', cursor: 'pointer' }}>
+                Use Burner Wallet
+              </button>
+              <button onClick={connectMetaMask} style={{ padding: '0.5rem 1rem', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '0.25rem', cursor: 'pointer' }}>
+                Use MetaMask
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  ); }
 
