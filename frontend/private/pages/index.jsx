@@ -1,38 +1,107 @@
-import React from 'react';
-import { useWallet } from '../../shared/WalletProvider';
+"use client";
 
-export default function PrivateDemoApp() {
-  const { wallet, connectMetaMask, createBurnerWallet } = useWallet();
+import { useState } from "react";
 
-return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f9fafb' }}>
-      <div style={{ width: '100%', maxWidth: '36rem', padding: '1.5rem', backgroundColor: 'white', borderRadius: '0.5rem', boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)' }}>
-        <h1 style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: '1rem' }}>Welcome to the Echo Ledger Demo</h1>
+export default function RegisterIdeaPage() {
+  const [formData, setFormData] = useState({
+    walletAddress: "",
+    title: "",
+    description: "",
+    proofURL: "",
+  });
 
-        {wallet ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <p style={{ color: '#4b5563' }}>
-              Connected wallet: <span style={{ fontFamily: 'monospace' }}>{wallet.address}</span>
-            </p>
-            <p style={{ color: '#374151' }}>
-              ✅ You now have access to this demo space. Here you can see how a registered idea would be validated
-              through a burner wallet or MetaMask.
-            </p>
+  const [submitted, setSubmitted] = useState(false);
+  const [tokenHash, setTokenHash] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      if (data.status === "success") {
+        setTokenHash(data.tokenHash);
+        setSubmitted(true);
+      }
+    } catch (error) {
+      console.error("Error submitting idea:", error);
+    }
+  };
+
+  return (
+    <main className="p-6 max-w-xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Register Your Idea</h1>
+
+      {submitted ? (
+        <div className="bg-green-100 p-4 rounded-lg shadow">
+          <p className="mb-2">✅ Idea successfully registered!</p>
+          <p><strong>Token:</strong> <code>{tokenHash}</code></p>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium">Wallet Address</label>
+            <input
+              type="text"
+              name="walletAddress"
+              value={formData.walletAddress}
+              onChange={handleChange}
+              required
+              className="w-full border border-gray-300 rounded p-2"
+            />
           </div>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <p style={{ color: '#374151' }}>Please connect a wallet to continue:</p>
-            <div style={{ display: 'flex', gap: '1rem' }}>
-              <button onClick={createBurnerWallet} style={{ padding: '0.5rem 1rem', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '0.25rem', cursor: 'pointer' }}>
-                Use Burner Wallet
-              </button>
-              <button onClick={connectMetaMask} style={{ padding: '0.5rem 1rem', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '0.25rem', cursor: 'pointer' }}>
-                Use MetaMask
-              </button>
-            </div>
+          <div>
+            <label className="block text-sm font-medium">Title</label>
+            <input
+              type="text"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              required
+              className="w-full border border-gray-300 rounded p-2"
+            />
           </div>
-        )}
-      </div>
-    </div>
-  ); }
-
+          <div>
+            <label className="block text-sm font-medium">Description</label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              required
+              rows="4"
+              className="w-full border border-gray-300 rounded p-2"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium">Proof URL (optional)</label>
+            <input
+              type="url"
+              name="proofURL"
+              value={formData.proofURL}
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded p-2"
+            />
+          </div>
+          <button
+            type="submit"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            Submit
+          </button>
+        </form>
+      )}
+    </main>
+  );
+}

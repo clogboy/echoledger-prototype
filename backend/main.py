@@ -44,3 +44,40 @@ def retrieve_idea(idea_id: str):
     if not record:
         raise HTTPException(status_code=404, detail="Record not found")
     return record
+
+from fastapi import FastAPI, Request
+from pydantic import BaseModel
+import hashlib
+import time
+
+app = FastAPI()
+
+idea_registry = []  # Temp storage for demo
+
+class IdeaSubmission(BaseModel):
+    walletAddress: str
+    title: str
+    description: str
+    proofURL: str | None = None
+
+@app.post("/api/register")
+async def register_idea(idea: IdeaSubmission):
+    token_data = f"{idea.walletAddress}-{idea.title}-{idea.description}-{time.time()}"
+    token_hash = hashlib.sha256(token_data.encode()).hexdigest()
+
+    record = {
+        "walletAddress": idea.walletAddress,
+        "title": idea.title,
+        "description": idea.description,
+        "proofURL": idea.proofURL,
+        "tokenHash": token_hash,
+        "timestamp": time.time()
+    }
+
+    idea_registry.append(record)
+
+    return {
+        "status": "success",
+        "tokenHash": token_hash,
+        "registeredAt": record["timestamp"]
+    }
