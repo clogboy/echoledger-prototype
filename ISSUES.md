@@ -3,41 +3,42 @@
 
 ## Critical Issues 🚨
 
-### API-001: Endpoint Mismatch ✅
-- **File**: `frontend/private/pages/index.jsx` line 22
-- **Issue**: Frontend calls `/api/register` but backend has `/register`
+### FE-002: Missing Next.js Configuration
+- **File**: `frontend/`
+- **Issue**: Frontend uses Next.js but missing next.config.js and other config files
 - **Priority**: High
-- **Status**: Resolved
-- **Fix**: Unified API endpoints to use `/api/` prefix
+- **Status**: Open
+- **Fix**: Add Next.js configuration files for proper development and build
 
-### API-002: Duplicate API Handlers ✅
-- **File**: `backend/main.py`
-- **Issue**: Two different register endpoints with conflicting models
-- **Priority**: High
-- **Status**: Resolved
-- **Fix**: Unified model that handles both frontend formats
+### PORT-001: Frontend Port Mismatch
+- **File**: `frontend/package.json`, `.replit`
+- **Issue**: Frontend dev script uses port 3000, but backend runs on 8080
+- **Priority**: Medium
+- **Status**: Open
+- **Fix**: Align frontend development port or configure proxy
 
 ## Medium Priority Issues ⚠️
 
-### FE-001: Unused Wallet Integration
-- **File**: `frontend/private/pages/index.jsx`
-- **Issue**: Form doesn't use WalletProvider despite having wallet integration
+### NAV-001: Missing Navigation
+- **File**: Frontend pages
+- **Issue**: No navigation between index.jsx and register.jsx pages
 - **Priority**: Medium
 - **Status**: Open
-- **Fix**: Integrate wallet connection in registration form
+- **Fix**: Add navigation component or menu
 
-### CONFIG-001: Workflow Path Issue
-- **File**: `.replit`
-- **Issue**: Run command properly configured for backend directory
-- **Priority**: Low
-- **Status**: Resolved
-
-### IMPORT-001: Missing Dependencies
-- **File**: `frontend/`
-- **Issue**: Frontend uses ethers but no package.json
+### API-003: Hardcoded API URLs
+- **File**: `frontend/private/pages/*.jsx`
+- **Issue**: API calls use relative URLs that may not work in all environments
 - **Priority**: Medium
 - **Status**: Open
-- **Fix**: Add package.json with proper dependencies
+- **Fix**: Use environment variables for API base URL
+
+### STORAGE-001: Temporary In-Memory Storage
+- **File**: `backend/main.py`
+- **Issue**: Uses temporary storage that resets on server restart
+- **Priority**: Medium
+- **Status**: Open
+- **Fix**: Implement persistent storage backend
 
 ## Low Priority Issues 📝
 
@@ -48,25 +49,59 @@
 - **Status**: Open
 - **Fix**: Create unified CSS classes
 
+### WALLET-001: Burner Wallet Persistence
+- **File**: `frontend/shared/ui/WalletProvider.js`
+- **Issue**: Burner wallets are regenerated on page refresh
+- **Priority**: Low
+- **Status**: Open
+- **Fix**: Add session storage for burner wallet persistence
+
+### CONFIG-001: Missing Environment Configuration
+- **File**: Project root
+- **Issue**: No environment-specific configuration
+- **Priority**: Low
+- **Status**: Open
+- **Fix**: Add .env files for different environments
+
+## Recently Resolved Issues ✅
+
+### IMPORT-001: Missing Dependencies ✅
+- **Resolution**: Added comprehensive package.json with all required dependencies
+- **Resolved**: Current session
+
+### FE-001: Unused Wallet Integration ✅
+- **Resolution**: Both registration forms now properly use WalletProvider
+- **Resolved**: Current session
+
+### API-001: Endpoint Mismatch ✅
+- **Resolution**: Unified API endpoints to use `/api/` prefix
+- **Resolved**: Previous session
+
+### API-002: Duplicate API Handlers ✅
+- **Resolution**: Unified model that handles both frontend formats
+- **Resolved**: Previous session
+
 ### CORS-001: Missing CORS Configuration ✅
-- **File**: `backend/main.py`
-- **Issue**: No CORS middleware for frontend-backend communication
-- **Priority**: Medium
-- **Status**: Resolved
+- **Resolution**: Added proper CORS middleware
+- **Resolved**: Previous session
 
 ## TODO Items
 
-- [x] Unify API models and endpoints (API-001, API-002)
-- [x] Set up proper CORS for frontend-backend communication (CORS-001)
-- [ ] Add frontend package management (IMPORT-001)
-- [ ] Integrate wallet functionality in all forms (FE-001)
-- [ ] Add error handling to API calls
-- [ ] Add input validation
-- [ ] Add comprehensive testing
+- [ ] Add Next.js configuration files (FE-002)
+- [ ] Align frontend/backend port configuration (PORT-001)
+- [ ] Add navigation between registration pages (NAV-001)
+- [ ] Configure environment-based API URLs (API-003)
+- [ ] Implement persistent storage backend (STORAGE-001)
+- [ ] Add session persistence for burner wallets (WALLET-001)
+- [ ] Create unified CSS styling system (STYLE-001)
+- [ ] Add environment configuration files (CONFIG-001)
+- [ ] Add comprehensive testing suite
 - [ ] Set up pre-commit hooks for code quality
 
-## Resolved Issues ✅
+## Code Quality Assessment ✅
 
-### CONFIG-001: Workflow Path Issue
-- **Resolution**: Workflow correctly configured to run from backend directory
-- **Resolved**: Current
+- **Backend**: Well-structured with unified API model and proper error handling
+- **Frontend**: Good wallet integration and form validation
+- **Dependencies**: All required packages properly defined
+- **Error Handling**: Comprehensive error handling in both forms
+- **Wallet Integration**: Both manual and connected registration work correctly
