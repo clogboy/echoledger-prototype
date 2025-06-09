@@ -5,8 +5,10 @@
   "description": "EchoLedger Frontend - Proof of Idea Registration",
   "main": "index.js",
   "scripts": {
-    "dev": "next dev -p 5000",
-    "build": "next build",
+    "dev": "next dev -p 5000 --src public",
+    "dev:private": "next dev -p 5001 --src private", 
+    "build": "next build --src public",
+    "build:private": "next build --src private",
     "start": "next start",
     "lint": "next lint"
   },

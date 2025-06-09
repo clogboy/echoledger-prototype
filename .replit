@@ -30,3 +30,21 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "cd backend && uvicorn main:app --host 0.0.0.0 --port 8080 --reload"
+
+[[workflows.workflow]]
+name = "Frontend Dev"
+author = 876735
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd frontend && npm run dev"
+
+[[workflows.workflow]]
+name = "Private Frontend Dev"
+author = 876735
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd frontend && npm run dev:private"
