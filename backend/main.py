@@ -6,9 +6,13 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 from storage import StorageBackend
+from issues import router as issues_router
 
 app = FastAPI()
 storage = StorageBackend()
+
+# Include issue tracking
+app.include_router(issues_router, prefix="/api")
 
 class IdeaSubmission(BaseModel):
     source: str
