@@ -1,11 +1,13 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useWallet } from "../../shared/ui/WalletProvider";
 
 export default function RegisterIdeaPage() {
+  const { address, walletType, createBurnerWallet, connectMetaMask, logoutWallet } = useWallet();
+  
   const [formData, setFormData] = useState({
-    walletAddress: "",
     title: "",
     description: "",
     proofURL: "",
@@ -16,6 +18,13 @@ export default function RegisterIdeaPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Auto-create burner wallet for demo purposes on page load
+  useEffect(() => {
+    if (!address) {
+      createBurnerWallet();
+    }
+  }, [address, createBurnerWallet]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -24,8 +33,8 @@ export default function RegisterIdeaPage() {
   };
 
   const validateForm = () => {
-    if (!formData.walletAddress.trim()) {
-      setError("Wallet address is required");
+    if (!address) {
+      setError("Wallet must be connected");
       return false;
     }
     if (!formData.title.trim()) {
@@ -61,12 +70,18 @@ export default function RegisterIdeaPage() {
     setError("");
 
     try {
+      const payload = {
+        ...formData,
+        walletAddress: address,
+        type: walletType,
+      };
+
       const response = await fetch("/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
@@ -91,7 +106,29 @@ export default function RegisterIdeaPage() {
 
   return (
     <main className="p-6 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Register Your Idea</h1>
+      <h1 className="text-2xl font-bold mb-4">Register Your Idea (Demo Mode)</h1>
+
+      {/* Wallet Status Display */}
+      {address && (
+        <div className="bg-blue-50 p-3 rounded mb-4">
+          <p className="text-sm"><strong>Demo Wallet:</strong> {address}</p>
+          <p className="text-sm"><strong>Type:</strong> {walletType}</p>
+          <div className="mt-2 space-x-2">
+            <button 
+              onClick={createBurnerWallet}
+              className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded hover:bg-blue-200"
+            >
+              New Burner Wallet
+            </button>
+            <button 
+              onClick={connectMetaMask}
+              className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded hover:bg-orange-200"
+            >
+              Use MetaMask Instead
+            </button>
+          </div>
+        </div>
+      )}
 
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
@@ -103,12 +140,14 @@ export default function RegisterIdeaPage() {
         <div className="bg-green-100 p-4 rounded-lg shadow">
           <p className="mb-2">✅ Idea successfully registered!</p>
           <p><strong>Token:</strong> <code className="bg-gray-100 px-2 py-1 rounded">{tokenHash}</code></p>
+          <p className="text-sm text-gray-600 mt-2">
+            <strong>Registered with:</strong> {address} ({walletType})
+          </p>
           <button 
             onClick={() => {
               setSubmitted(false);
               setTokenHash("");
               setFormData({
-                walletAddress: "",
                 title: "",
                 description: "",
                 proofURL: "",
@@ -121,19 +160,6 @@ export default function RegisterIdeaPage() {
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium">Wallet Address *</label>
-            <input
-              type="text"
-              name="walletAddress"
-              value={formData.walletAddress}
-              onChange={handleChange}
-              required
-              disabled={loading}
-              placeholder="0x..."
-              className="w-full border border-gray-300 rounded p-2 disabled:bg-gray-100"
-            />
-          </div>
           <div>
             <label className="block text-sm font-medium">Title *</label>
             <input
@@ -174,7 +200,7 @@ export default function RegisterIdeaPage() {
           </div>
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || !address}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed w-full"
           >
             {loading ? "Registering..." : "Submit"}
