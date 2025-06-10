@@ -1,52 +1,52 @@
-EchoLedger
+# EchoLedger Prototype
 
-EchoLedger is a minimal, transparent proof-of-idea system. It allows users to register creative or intellectual contributions on-chain using lightweight tokens as timestamps and evidence of origin. Think of it as a digital notary office for the ideas economy.
+EchoLedger is a decentralized utility for timestamping and registering original ideas on the blockchain. It enables users to log their concepts as tamper-proof entries, optionally minting a token that reflects their submission.
 
-What It Does
+## 🔍 What It Is
 
-EchoLedger allows users to:
+- A digital notary-like service for idea registration
+- A public utility built with transparency, privacy, and decentralization in mind
+- A prototype implementation using Python (FastAPI), React, wallet integration (MetaMask and burner wallets), and Fly.io for deployment
 
-Describe an idea in plain text.
+## 🚫 What It Is Not
 
-Mint a blockchain token that anchors this idea to a specific moment in time.
+- Not a financial product
+- Not a marketplace or intellectual property registry
+- Not legal proof of authorship or ownership on its own
 
-Prove ownership and priority without revealing private details.
+## 🎯 Project Intent
 
-Share a verifiable, permanent record of the idea.
+EchoLedger is designed as an open-source tool for:
+- Claiming a timestamped record of your idea on-chain
+- Encouraging a culture of intellectual contribution without requiring legal or institutional mediation
+- Exploring how Web3 and verifiable credentials can be repurposed for creative autonomy
 
+While currently free and experimental, the system may later introduce:
+- A small user fee to sustain infrastructure and operations
+- A monetary token model tied to submission volume or network activity
 
-What It Doesn't Do
+## 🧑‍💻 Developer Notes
 
-EchoLedger is not a marketplace or social network.
+- This project is in active development.
+- Structure is designed to remain clean and adaptable.
+- Admin access is being built using GitHub OAuth and optional email/password fallback.
 
-It does not manage idea execution, IP enforcement, or patent processes.
+## ⚠️ Legal & Ethical Considerations
 
-It is not a financial service and does not currently support trading, investing, or speculation.
+- This is a *utility*, not a marketplace or financial platform.
+- The token minted during registration currently has **no intrinsic monetary value**.
+- If tokens gain value in the future, appropriate legal and regulatory processes will be followed.
+- EchoLedger makes no guarantees about protecting intellectual property; it simply provides immutable proof that an idea was submitted at a certain point in time.
 
+## 🔐 Licensing
 
-Current Status
+- Source code is released under the standard open source license included in this repository.
+- Attribution is required if the project is reused or repurposed.
+- This license may be revised as the project matures.
 
-EchoLedger is in active development and is provided as a public prototype. The current version uses burner wallets and MetaMask integration for wallet login, and supports a private frontend with optional access control for demo users. It is suitable for early testing, experimentation, and ideation.
+---
 
-Legal and Sustainability Disclaimer
+## 👤 Maintainer
 
-EchoLedger is a utility platform designed to timestamp and publicly register ideas using blockchain-backed tokens. It is not currently a financial product, trading platform, or investment vehicle.
-
-Tokens serve as verifiable proof-of-origin and do not carry monetary value by default.
-
-Wallet authentication is used only for decentralized identity; no personal data is collected or required.
-
-The system is open, transparent, and free to use during this development phase.
-
-
-To support hosting and long-term availability, a small user fee may be introduced in future versions. If this happens, it will be modest, clearly communicated, and reinvested into keeping the system online and blockchain-secured.
-
-Future versions may introduce value-bearing mechanics if demand warrants. In that case, appropriate legal, fiscal, and ethical steps will be taken to comply with relevant regulations and ensure fairness.
-
-License
-
-EchoLedger is open source under an MIT License. Attribution is required. Contributions, forks, and community improvements are welcome.
-
-Contact
-
-For suggestions, discussion, or demo access, reach out to the project maintainer through the admin interface or contact channels provided in the deployment environment.
+Developed and maintained by [@clogboy](https://github.com/clogboy).  
+Contributions welcome. Opinions and improvements encouraged.  
